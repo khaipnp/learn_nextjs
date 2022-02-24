@@ -24,29 +24,36 @@ export default function DetailNews() {
   return (
     <>
       <Header />
-      <div className="container mx-auto">
-        <span>{category}</span>
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <div>
-          <span>{author}</span>
-          <span>{timePost}</span>
-        </div>
-        <div className="content">
-          <h6 className="font-bold">{desc}</h6>
-          <p>{content}</p>
-          <div>
-            <Image
-              loading="lazy"
-              src={'/img/Cruz_Beckham_q_1645503379.jpeg'}
-              width={400}
-              height={400}
-              className="border-gray-600 border-solid rounded"
-              placeholder={descImg}
-            />
-            <p>{descImg}</p>
+      <main>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <strong>{category}</strong>
+            <h1 className="text-3xl font-bold pt-2">{title}</h1>
+            <ul className='the-article-meta'>
+                <li></li>
+            </ul>
+            <div className="mt-3">
+              <span>{author}</span> - <span>{timePost}</span>
+            </div>
+            <div className="content mt-2">
+              <h6 className="font-bold">{desc}</h6>
+              <p>{content}</p>
+              <div>
+                <Image
+                  loading="lazy"
+                  src={'/img/Cruz_Beckham_q_1645503379.jpeg'}
+                  width={400}
+                  height={400}
+                  className="border-gray-600 border-solid rounded"
+                  placeholder={descImg}
+                  alt=""
+                />
+                <p>{descImg}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }
