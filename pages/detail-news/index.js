@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
+import Header from '../../components/header'
 
 export default function DetailNews() {
   const [category, setCategory] = useState('GIẢI TRÍ')
@@ -15,14 +16,14 @@ export default function DetailNews() {
   const [content, setContent] = useState(
     'Ngày 22/2, vợ chồng Beckham đã chia sẻ ảnh chụp cho tạp chí i-D của con trai Cruz Beckham lên trang cá nhân. Cặp vợ chồng nổi tiếng đăng tổng cộng 13 bức ảnh với chú thích: “Ngày đầu tiên của tuổi 17 thật tuyệt vời. Mẹ tự hào về con". <br />Tuy nhiên, sau khi đăng tải loạt ảnh của con trai, Vic-Becks đã vấp phải làn sóng chỉ trích từ khán giả. Nhiều người cho rằng hình ảnh nổi loạn trong bộ ảnh không phù hợp với Cruz. Cậu nhuộm tóc hồng, cởi trần và mặc quần cạp trễ lộ viền nội y. Một số ảnh, Cruz thậm chí chỉ mặc đồ lót.'
   )
-  const currentTime = new Date().toLocaleString()
 
   useEffect(() => {
-    setTimePost(currentTime)
+    setTimePost(new Date().toLocaleDateString())
   }, [])
 
   return (
     <>
+      <Header />
       <div className="container mx-auto">
         <span>{category}</span>
         <h1 className="text-3xl font-bold">{title}</h1>
@@ -35,6 +36,7 @@ export default function DetailNews() {
           <p>{content}</p>
           <div>
             <Image
+              loading="lazy"
               src={'/img/Cruz_Beckham_q_1645503379.jpeg'}
               width={400}
               height={400}
