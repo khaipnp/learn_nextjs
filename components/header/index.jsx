@@ -1,184 +1,134 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
-import Link from 'next/link'
-
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl: '/img/Putin2402.jpeg',
-}
-const navigation = [
-  { name: 'Xuất bản', href: '#', current: true },
-  { name: 'Thời sự', href: '#', current: false },
-  { name: 'Thế giới', href: '#', current: false },
-  { name: 'Kinh doanh', href: '#', current: false },
-  { name: 'Công nghệ', href: '#', current: false },
-  { name: 'Sức khỏe', href: '#', current: false },
-  { name: 'Thể thao', href: '#', current: false },
-  { name: 'Giải trí', href: '#', current: false },
-  { name: 'Đời sống', href: '#', current: false },
-  { name: 'Du lịch', href: '#', current: false },
-]
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Đăng xuất', href: '#' },
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useState } from 'react'
 
 export default function Header() {
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
   return (
     <>
-      <div className="min-h-full min-w-full border-b border-gray-300">
-        <Disclosure as="nav" className="bg-white">
-          {({ open }) => (
-            <>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                  <div className="flex-shrink-0 flex flex-col items-center">
-                    <Image
-                      width={'100px'}
-                      height={'32px'}
-                      src={'/img/logo-zing-home.svg'}
-                      alt="Workflow"
-                    />
-                    <span className="text-[8px]">TRI THỨC TRỰC TUYẾN</span>
-                  </div>
-                  <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
-                      {navigation.map((item) => (
-                        <Link href={item.href} key={item.name}>
-                          <a
-                            className={classNames(
-                              item.current
-                                ? 'border-b-2 border-blue-700 text-gray-900 rounded-none'
-                                : 'text-gray-900 hover:border-blue-700 hover:border-b-2 rounded-none hover:text-blue-900',
-                              'px-3 py-2 rounded-md text-sm font-medium'
-                            )}
-                            aria-current={item.current ? 'page' : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+      <div className=" container mx-auto md:container md:mx-auto flex justify-between items-center py-4 max-h-16 shadow-sm bg-white px-7">
+        <div className="logo">
+          <Image src="/img/TikTok_logo.svg" alt="logo" height={64} width={150} />
+        </div>
+        <div className="search">
+          <input
+            type="text"
+            className="border rounded-full px-3 py-3 bg-gray-100 w-72"
+            placeholder="Search account and videos"
+          />
+        </div>
+        <div className="user-tool-box flex flex-row items-center">
+          <button
+            type="button"
+            className="font-semibold text-black cursor-pointer mx-1"
+            onClick={openModal}
+          >
+            Upload
+          </button>
+          <button
+            type="button"
+            className="rounded-md bg-red-500 text-white px-8 font-semibold py-2 hover:bg-opacity-60 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mx-1"
+            onClick={openModal}
+          >
+            Log in
+          </button>
+          <div className="menu px-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+              />
+            </svg>
+          </div>
+        </div>
+        {/* Popup */}
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
+            <div className="min-h-screen px-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Dialog.Overlay className="fixed inset-0" />
+              </Transition.Child>
 
-                  <div className="hidden md:block">
-                    <div className="ml-4 flex items-center md:ml-6">
-                      {/* Profile dropdown */}
-                      <Menu as="div" className="ml-3 relative">
-                        <div>
-                          <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                            <span className="sr-only">Open user menu</span>
-                            <Image
-                              src={user.imageUrl}
-                              width="32px"
-                              height="32px"
-                              className="rounded-full"
-                              alt=""
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
+              {/* This element is to trick the browser into centering the modal contents. */}
+              <span className="inline-block h-screen align-middle" aria-hidden="true">
+                &#8203;
+              </span>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-2xl font-bold text-center leading-6 text-gray-900"
+                  >
+                    Log in to Tiktok
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <div className="qr-login flex flex-row max-w-full border rounded p-2 items-center justify-between">
+                      <div className="qr-login-inner w-11 h-11">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
-                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <a
-                                    href={item.href}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-2 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
+                          <path
+                            fillRule="evenodd"
+                            d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z"
+                            clipRule="evenodd"
+                          />
+                          <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
+                        </svg>
+                      </div>
+                      <p className="h-11 leading-normal font-medium w-full text-center">
+                        Use QR Code
+                      </p>
                     </div>
                   </div>
-                  <div className="-mr-2 flex md:hidden">
-                    {/* Mobile menu button */}
-                    <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XIcon className="block h-6 w-6" aria-hidden="true" />
-                      ) : (
-                        <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                      )}
-                    </Disclosure.Button>
-                  </div>
-                </div>
-              </div>
 
-              <Disclosure.Panel className="md:hidden">
-                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      onClick={closeModal}
                     >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div>
-                <div className="pt-4 pb-3 border-t border-gray-700">
-                  <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <Image className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">
-                        {user.name}
-                      </div>
-                      <div className="text-sm font-medium leading-none text-gray-400">
-                        {user.email}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-3 px-2 space-y-1">
-                    {userNavigation.map((item) => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ))}
+                      Got it, thanks!
+                    </button>
                   </div>
                 </div>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
+              </Transition.Child>
+            </div>
+          </Dialog>
+        </Transition>
       </div>
     </>
   )
